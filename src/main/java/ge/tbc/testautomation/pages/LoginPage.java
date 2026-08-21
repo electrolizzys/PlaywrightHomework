@@ -4,18 +4,22 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 public class LoginPage extends CommonPage {
+    public Locator pageTitle;
     public Locator emailInput;
     public Locator passwordInput;
     public Locator loginBtn;
     public Locator registerLink;
     public Locator loginError;
+    public Locator forgotPasswordLink;
 
     public LoginPage(Page page) {
         super(page);
-        emailInput = page.locator("[data-test='email']");
-        passwordInput = page.locator("[data-test='password']");
-        loginBtn = page.locator("[data-test='login-submit']");
-        registerLink = page.locator("[data-test='register-link']");
-        loginError = page.locator("[data-test='login-error']");
+        pageTitle = page.getByRole(com.microsoft.playwright.options.AriaRole.HEADING, new Page.GetByRoleOptions().setName("Login"));
+        emailInput = page.getByTestId("email");
+        passwordInput = page.getByTestId("password");
+        loginBtn = page.getByTestId("login-submit");
+        registerLink = page.getByTestId("register-link");
+        loginError = page.getByTestId("login-error");
+        forgotPasswordLink = page.getByTestId("forgot-password-link");
     }
 }

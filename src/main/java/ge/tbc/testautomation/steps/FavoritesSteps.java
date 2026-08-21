@@ -14,15 +14,15 @@ public class FavoritesSteps {
         favoritesPage = new FavoritesPage(page);
     }
 
-    public FavoritesSteps openFavourites() {
-        favoritesPage.userMenu.click();
-        favoritesPage.myFavouritesLink.click();
+    public FavoritesSteps validateFavouriteIsVisible(String productName) {
         assertThat(favoritesPage.pageTitle).isVisible();
+        assertThat(favoritesPage.favouriteProductNames).hasText(productName);
         return this;
     }
 
-    public FavoritesSteps validateFavouriteIsVisible(String productName) {
-        assertThat(favoritesPage.favouriteProductNames).hasText(productName);
+    public FavoritesSteps openFavourites() {
+        new NavigationSteps(page).openFavourites();
+        assertThat(favoritesPage.pageTitle).isVisible();
         return this;
     }
 
@@ -38,7 +38,7 @@ public class FavoritesSteps {
     }
 
     public FavoritesSteps validateFavouriteIsNotVisible(String productName) {
-        assertThat(page.getByText(productName, new Page.GetByTextOptions().setExact(true))).hasCount(0);
+        assertThat(favoritesPage.favouriteByName(productName)).hasCount(0);
         return this;
     }
 }

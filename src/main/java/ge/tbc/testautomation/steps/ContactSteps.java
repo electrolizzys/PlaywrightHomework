@@ -1,0 +1,84 @@
+package ge.tbc.testautomation.steps;
+
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.SelectOption;
+import ge.tbc.testautomation.data.Constants;
+import ge.tbc.testautomation.data.UserData;
+import ge.tbc.testautomation.pages.ContactPage;
+
+import java.nio.file.Path;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
+public class ContactSteps {
+    Page page;
+    ContactPage contactPage;
+
+    public ContactSteps(Page page) {
+        this.page = page;
+        contactPage = new ContactPage(page);
+    }
+
+    public ContactSteps validateFormIsDisplayed() {
+        contactPage.pageTitle.waitFor();
+        assertThat(contactPage.firstNameInput).isVisible();
+        assertThat(contactPage.submitBtn).isVisible();
+        return this;
+    }
+
+    public ContactSteps submitEmptyForm() {
+        contactPage.submitBtn.click();
+        return this;
+    }
+
+    public ContactSteps validateRequiredFieldErrors() {
+        assertThat(contactPage.firstNameError).containsText(Constants.FIRST_NAME_REQUIRED);
+        assertThat(contactPage.lastNameError).containsText(Constants.LAST_NAME_REQUIRED);
+        assertThat(contactPage.emailError).containsText(Constants.EMAIL_REQUIRED);
+        assertThat(contactPage.messageError).containsText(Constants.MESSAGE_REQUIRED);
+        return this;
+    }
+
+    public ContactSteps fillIdentity(UserData user) {
+        contactPage.firstNameInput.fill(user.firstName);
+        contactPage.lastNameInput.fill(user.lastName);
+        contactPage.emailInput.fill(user.email);
+        return this;
+    }
+
+    public ContactSteps selectSubject(String subject) {
+        contactPage.subjectSelect.selectOption(new SelectOption().setLabel(subject));
+        return this;
+    }
+
+    public ContactSteps fillMessage(String message) {
+        contactPage.messageInput.fill(message);
+        return this;
+    }
+
+    public ContactSteps attachFile(Path file) {
+        contactPage.attachmentInput.setInputFiles(file);
+        return this;
+    }
+
+    public ContactSteps submit() {
+        contactPage.submitBtn.click();
+        return this;
+    }
+
+    public ContactSteps validateInvalidAttachmentError() {
+        assertThat(contactPage.attachmentError).containsText(Constants.INCORRECT_ATTACHMENT_TYPE);
+        return this;
+    }
+
+    public ContactSteps validateSuccessfulSubmission() {
+        assertThat(contactPage.successMessage).isVisible();
+        return this;
+    }
+
+    public ContactSteps validateFormReadyForNewSubmission() {
+        assertThat(contactPage.successMessage).isVisible();
+        assertThat(contactPage.firstNameInput).not().isVisible();
+        return this;
+    }
+}

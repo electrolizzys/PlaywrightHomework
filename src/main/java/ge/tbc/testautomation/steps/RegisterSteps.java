@@ -4,23 +4,50 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.SelectOption;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import ge.tbc.testautomation.data.Constants;
 import ge.tbc.testautomation.data.UserData;
+import ge.tbc.testautomation.pages.LoginPage;
 import ge.tbc.testautomation.pages.RegisterPage;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static ge.tbc.testautomation.data.Constants.REGISTER_URL;
 
 public class RegisterSteps {
     Page page;
     RegisterPage registerPage;
+    LoginPage loginPage;
 
     public RegisterSteps(Page page) {
         this.page = page;
         registerPage = new RegisterPage(page);
+        loginPage = new LoginPage(page);
     }
 
     public RegisterSteps openRegisterPage() {
         page.navigate(REGISTER_URL);
         registerPage.firstNameInput.waitFor();
+        return this;
+    }
+
+    public RegisterSteps validateRegistrationFormIsDisplayed() {
+        registerPage.pageTitle.waitFor();
+        assertThat(registerPage.firstNameInput).isVisible();
+        assertThat(registerPage.emailInput).isVisible();
+        assertThat(registerPage.passwordInput).isVisible();
+        return this;
+    }
+
+    public RegisterSteps submitInvalidData() {
+        registerPage.emailInput.fill(Constants.INVALID_EMAIL);
+        registerPage.passwordInput.fill(Constants.WEAK_PASSWORD);
+        registerPage.registerBtn.click();
+        return this;
+    }
+
+    public RegisterSteps validateInvalidRegistrationErrors() {
+        assertThat(registerPage.emailError).isVisible();
+        assertThat(registerPage.emailError).containsText(Constants.EMAIL_FORMAT_INVALID);
+        assertThat(registerPage.passwordError).isVisible();
         return this;
     }
 
@@ -43,13 +70,17 @@ public class RegisterSteps {
 
     public RegisterSteps submit() {
         registerPage.registerBtn.click();
-        Locator registerError = page.locator("[data-test='register-error'], [data-test='password-error']");
-        Locator loginSubmit = page.locator("[data-test='login-submit']");
-        loginSubmit.or(registerError).first().waitFor();
-        if (registerError.count() > 0 && registerError.first().isVisible()) {
-            throw new IllegalStateException("Registration failed: " + registerError.first().innerText());
+        Locator registerError = registerPage.registerError.or(registerPage.passwordError);
+        loginPage.loginBtn.or(registerError).first().waitFor();
+        if (registerPage.registerError.count() > 0 && registerPage.registerError.first().isVisible()) {
+            throw new IllegalStateException("Registration failed: " + registerPage.registerError.innerText());
         }
-        loginSubmit.waitFor();
+        loginPage.loginBtn.waitFor();
+        return this;
+    }
+
+    public RegisterSteps validateRedirectToLogin() {
+        assertThat(loginPage.loginBtn).isVisible();
         return this;
     }
 
