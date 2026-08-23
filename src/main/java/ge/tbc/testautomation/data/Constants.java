@@ -39,4 +39,10 @@ public class Constants {
     public static final String CASH_ON_DELIVERY = "cash-on-delivery";
     public static final String GUEST_TAB = "Continue as Guest";
     public static final String CHECKOUT_SIGN_IN_PROMPT = "Would you like to sign in or continue as guest?";
+
+    public static final String PRESTASHOP_URL = "https://demo.prestashop.com/";
+    public static final String PRESTASHOP_FRAME = "framelive";
+    public static final String PRESTASHOP_CONTACT_SUBJECT = "Customer service";
+    public static final String PRESTASHOP_CONTACT_MESSAGE = "I need assistance with a recent order and I am attaching a file that describes the issue.";
+    public static final String PRESTASHOP_CONTACT_SUCCESS = "Your message has been successfully sent to our team.";
 }

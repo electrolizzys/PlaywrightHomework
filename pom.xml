@@ -40,12 +40,10 @@
                 <version>3.5.2</version>
                 <configuration>
                     <includes>
-                        <include>**/GuestPurchaseCompletionTest.java</include>
-                        <include>**/NewUserRegistrationAuthenticationTest.java</include>
-                        <include>**/SupportRequestSubmissionTest.java</include>
+                        <include>**/CustomerSupportInquirySubmissionTest.java</include>
                     </includes>
-                    <parallel>classes</parallel>
-                    <threadCount>3</threadCount>
+                    <parallel>instances</parallel>
+                    <threadCount>2</threadCount>
                     <useUnlimitedThreads>false</useUnlimitedThreads>
                 </configuration>
             </plugin>
