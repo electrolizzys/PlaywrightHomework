@@ -2,9 +2,11 @@ package ge.tbc.testautomation.data;
 
 import com.github.javafaker.Faker;
 
+import java.text.SimpleDateFormat;
+
 public class UserData {
     private static final Faker FAKER = new Faker();
-
+    private static final String VALID_PASSWORD = "Test#2222!";
     public final String firstName;
     public final String lastName;
     public final String dateOfBirth;
@@ -18,23 +20,42 @@ public class UserData {
     public final String email;
     public final String password;
 
-    public UserData(String email) {
-        this.firstName = Constants.FIRST_NAME;
-        this.lastName = Constants.LAST_NAME;
-        this.dateOfBirth = Constants.DATE_OF_BIRTH;
-        this.country = Constants.COUNTRY;
-        this.postalCode = Constants.POSTAL_CODE;
-        this.houseNumber = Constants.HOUSE_NUMBER;
-        this.street = Constants.STREET;
-        this.city = Constants.CITY;
-        this.state = Constants.STATE;
-        this.phone = Constants.PHONE;
+    private UserData(String firstName, String lastName, String dateOfBirth, String country, String postalCode,
+                     String houseNumber, String street, String city, String state, String phone,
+                     String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.phone = phone;
         this.email = email;
-        this.password = Constants.PASSWORD;
+        this.password = password;
     }
 
     public static UserData randomUser() {
-        String email = FAKER.internet().emailAddress().replace("'", "");
-        return new UserData(email);
+        return new UserData(
+                letters(FAKER.name().firstName(), "Anna"),
+                letters(FAKER.name().lastName(), "Beridze"),
+                new SimpleDateFormat("yyyy-MM-dd").format(FAKER.date().birthday(18, 60)),
+                "Georgia",
+                "0108",
+                String.valueOf(FAKER.number().numberBetween(1, 200)),
+                "Chavchavadze Avenue",
+                "Tbilisi",
+                "Tbilisi",
+                FAKER.numerify("5########"),
+                FAKER.internet().emailAddress().replace("'", ""),
+                VALID_PASSWORD
+        );
+    }
+
+    private static String letters(String value, String fallback) {
+        String cleaned = value.replaceAll("[^A-Za-z]", "");
+        return cleaned.length() < 2 ? fallback : cleaned;
     }
 }

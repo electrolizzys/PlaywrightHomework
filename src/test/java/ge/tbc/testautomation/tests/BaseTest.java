@@ -42,6 +42,7 @@ public abstract class BaseTest {
     public void setUp() {
         PlaywrightAssertions.setDefaultAssertionTimeout(30_000);
         playwright = Playwright.create();
+        playwright.selectors().setTestIdAttribute("data-test");
         BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
         launchOptions.setHeadless(isHeadless());
         browser = playwright.chromium().launch(launchOptions);

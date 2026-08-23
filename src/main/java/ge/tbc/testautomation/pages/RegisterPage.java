@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 public class RegisterPage extends CommonPage {
+    public Locator pageTitle;
     public Locator firstNameInput;
     public Locator lastNameInput;
     public Locator dateOfBirthInput;
@@ -18,22 +19,29 @@ public class RegisterPage extends CommonPage {
     public Locator passwordInput;
     public Locator registerBtn;
     public Locator postcodeLookupLoading;
+    public Locator emailError;
+    public Locator passwordError;
+    public Locator registerError;
 
     public RegisterPage(Page page) {
         super(page);
-        firstNameInput = page.locator("[data-test='first-name']");
-        lastNameInput = page.locator("[data-test='last-name']");
-        dateOfBirthInput = page.locator("[data-test='dob']");
-        countrySelect = page.locator("[data-test='country']");
-        postalCodeInput = page.locator("[data-test='postal_code']");
-        houseNumberInput = page.locator("[data-test='house_number']");
-        streetInput = page.locator("[data-test='street']");
-        cityInput = page.locator("[data-test='city']");
-        stateInput = page.locator("[data-test='state']");
-        phoneInput = page.locator("[data-test='phone']");
-        emailInput = page.locator("[data-test='email']");
-        passwordInput = page.locator("[data-test='password']");
-        registerBtn = page.locator("[data-test='register-submit']");
-        postcodeLookupLoading = page.locator("[data-test='postcode-lookup-loading']");
+        pageTitle = page.getByRole(com.microsoft.playwright.options.AriaRole.HEADING, new Page.GetByRoleOptions().setName("Customer registration"));
+        firstNameInput = page.getByTestId("first-name");
+        lastNameInput = page.getByTestId("last-name");
+        dateOfBirthInput = page.getByTestId("dob");
+        countrySelect = page.getByTestId("country");
+        postalCodeInput = page.getByTestId("postal_code");
+        houseNumberInput = page.getByTestId("house_number");
+        streetInput = page.getByTestId("street");
+        cityInput = page.getByTestId("city");
+        stateInput = page.getByTestId("state");
+        phoneInput = page.getByTestId("phone");
+        emailInput = page.getByTestId("email");
+        passwordInput = page.getByTestId("password");
+        registerBtn = page.getByTestId("register-submit");
+        postcodeLookupLoading = page.getByTestId("postcode-lookup-loading");
+        emailError = page.getByTestId("email-error");
+        passwordError = page.getByTestId("password-error");
+        registerError = page.getByTestId("register-error");
     }
 }

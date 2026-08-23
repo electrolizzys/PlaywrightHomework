@@ -12,9 +12,13 @@ public class FavoritesPage extends CommonPage {
 
     public FavoritesPage(Page page) {
         super(page);
-        pageTitle = page.locator("[data-test='page-title']");
-        favouriteProductNames = page.locator("[data-test='product-name']");
-        deleteBtn = page.locator("[data-test='delete']");
+        pageTitle = page.getByTestId("page-title");
+        favouriteProductNames = page.getByTestId("product-name");
+        deleteBtn = page.getByTestId("delete");
         noFavouritesMessage = page.getByText(Constants.NO_FAVOURITES_MESSAGE);
+    }
+
+    public Locator favouriteByName(String productName) {
+        return favouriteProductNames.filter(new Locator.FilterOptions().setHasText(productName));
     }
 }
