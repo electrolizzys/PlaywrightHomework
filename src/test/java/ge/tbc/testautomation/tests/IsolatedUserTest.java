@@ -1,5 +1,6 @@
 package ge.tbc.testautomation.tests;
 
+import io.qameta.allure.Feature;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -9,6 +10,7 @@ import static ge.tbc.testautomation.data.Constants.THOR_HAMMER;
 import static ge.tbc.testautomation.data.Constants.THOR_HAMMER_BRAND_TAG;
 import static ge.tbc.testautomation.data.Constants.THOR_HAMMER_CATEGORY_TAG;
 
+@Feature("Isolated-user headless tests for favourites, filters and product tags")
 public class IsolatedUserTest extends BaseTest {
 
     @Override
@@ -21,7 +23,7 @@ public class IsolatedUserTest extends BaseTest {
         return true;
     }
 
-    @Test()
+    @Test(description = "Add a product to favourites and confirm it remains after re-login")
     public void favouritesTest() {
         String favouriteProductName = homeSteps.openHome().chooseRandomProduct();
         productSteps.addToFavourites();
@@ -29,7 +31,7 @@ public class IsolatedUserTest extends BaseTest {
         favoritesSteps.openFavourites().validateFavouriteIsVisible(favouriteProductName);
     }
 
-    @Test()
+    @Test(description = "Filter by two categories and confirm the combined product count")
     public void filterTest() {
         homeSteps.openHome().selectCategory(FIRST_CATEGORY);
         int firstCategoryCount = homeSteps.countFilteredProducts();
@@ -40,7 +42,7 @@ public class IsolatedUserTest extends BaseTest {
         Assert.assertEquals(combinedCount, firstCategoryCount + secondCategoryCount);
     }
 
-    @Test()
+    @Test(description = "Remove a favourite and confirm it stays deleted after re-login")
     public void removeFavouriteTest() {
         String favouriteProductName = homeSteps.openHome().chooseRandomProduct();
         productSteps.addToFavourites();
@@ -54,7 +56,7 @@ public class IsolatedUserTest extends BaseTest {
                 .validateFavouriteIsNotVisible(favouriteProductName);
     }
 
-    @Test()
+    @Test(description = "Open Thor Hammer and validate category and brand tags")
     public void TagsTest() {
         homeSteps.goToHandToolsCategory().selectCategory(FIRST_CATEGORY)
                 .openProduct(THOR_HAMMER);

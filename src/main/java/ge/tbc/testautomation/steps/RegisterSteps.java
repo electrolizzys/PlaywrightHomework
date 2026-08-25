@@ -8,6 +8,7 @@ import ge.tbc.testautomation.data.Constants;
 import ge.tbc.testautomation.data.UserData;
 import ge.tbc.testautomation.pages.LoginPage;
 import ge.tbc.testautomation.pages.RegisterPage;
+import io.qameta.allure.Step;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static ge.tbc.testautomation.data.Constants.REGISTER_URL;
@@ -23,12 +24,14 @@ public class RegisterSteps {
         loginPage = new LoginPage(page);
     }
 
+    @Step("Opening the customer registration page")
     public RegisterSteps openRegisterPage() {
         page.navigate(REGISTER_URL);
         registerPage.firstNameInput.waitFor();
         return this;
     }
 
+    @Step("Validating that the registration form is displayed")
     public RegisterSteps validateRegistrationFormIsDisplayed() {
         registerPage.pageTitle.waitFor();
         assertThat(registerPage.firstNameInput).isVisible();
@@ -37,6 +40,7 @@ public class RegisterSteps {
         return this;
     }
 
+    @Step("Submitting the registration form with invalid data")
     public RegisterSteps submitInvalidData() {
         registerPage.emailInput.fill(Constants.INVALID_EMAIL);
         registerPage.passwordInput.fill(Constants.WEAK_PASSWORD);
@@ -44,6 +48,7 @@ public class RegisterSteps {
         return this;
     }
 
+    @Step("Validating invalid registration errors")
     public RegisterSteps validateInvalidRegistrationErrors() {
         assertThat(registerPage.emailError).isVisible();
         assertThat(registerPage.emailError).containsText(Constants.EMAIL_FORMAT_INVALID);
@@ -51,6 +56,7 @@ public class RegisterSteps {
         return this;
     }
 
+    @Step("Filling the registration form with valid user data")
     public RegisterSteps fillRegistrationForm(UserData user) {
         registerPage.firstNameInput.fill(user.firstName);
         registerPage.lastNameInput.fill(user.lastName);
@@ -68,6 +74,7 @@ public class RegisterSteps {
         return this;
     }
 
+    @Step("Submitting the registration form")
     public RegisterSteps submit() {
         registerPage.registerBtn.click();
         Locator registerError = registerPage.registerError.or(registerPage.passwordError);
@@ -79,6 +86,7 @@ public class RegisterSteps {
         return this;
     }
 
+    @Step("Validating redirect to the login page")
     public RegisterSteps validateRedirectToLogin() {
         assertThat(loginPage.loginBtn).isVisible();
         return this;

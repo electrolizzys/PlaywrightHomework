@@ -4,6 +4,7 @@ import com.microsoft.playwright.FrameLocator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import ge.tbc.testautomation.pages.PrestaShopHomePage;
+import io.qameta.allure.Step;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static ge.tbc.testautomation.data.Constants.PRESTASHOP_URL;
@@ -17,6 +18,7 @@ public class PrestaShopHomeSteps {
         homePage = new PrestaShopHomePage(page, shop);
     }
 
+    @Step("Opening the PrestaShop demo storefront inside framelive")
     public PrestaShopHomeSteps openShop() {
         page.navigate(PRESTASHOP_URL);
         homePage.liveFrame.waitFor();
@@ -24,11 +26,13 @@ public class PrestaShopHomeSteps {
         return this;
     }
 
+    @Step("Validating that the storefront is displayed")
     public PrestaShopHomeSteps validateStorefrontDisplayed() {
         assertThat(homePage.header).isVisible();
         assertThat(homePage.contactUsLink.first()).isAttached();
         return this;
     }
+    @Step("Extracting the store email from the footer")
     public String extractStoreEmail() {
         homePage.footerEmail.waitFor();
         Object email = homePage.footerEmail.evaluate(
@@ -39,6 +43,7 @@ public class PrestaShopHomeSteps {
         }
         return storeEmail;
     }
+    @Step("Opening Contact us")
     public PrestaShopHomeSteps openContactUs() {
         homePage.contactUsLink.first().click();
         return this;

@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import ge.tbc.testautomation.data.Constants;
 import ge.tbc.testautomation.data.UserData;
 import ge.tbc.testautomation.pages.CheckoutPage;
+import io.qameta.allure.Step;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -19,12 +20,14 @@ public class CheckoutSteps {
         checkoutPage = new CheckoutPage(page);
     }
 
+    @Step("Validateing the checkout sign-in step")
     public CheckoutSteps validateSignInStep() {
         checkoutPage.guestTab.waitFor();
         assertThat(checkoutPage.guestTab).isVisible();
         return this;
     }
 
+    @Step("Contineing checkout as a guest")
     public CheckoutSteps continueAsGuest(UserData user) {
         checkoutPage.guestTab.click();
         checkoutPage.guestEmail.waitFor();
@@ -37,6 +40,7 @@ public class CheckoutSteps {
         return this;
     }
 
+    @Step("Filling the billing address")
     public CheckoutSteps fillBillingAddress(UserData user) {
         checkoutPage.streetInput.waitFor();
         checkoutPage.countrySelect.selectOption(new SelectOption().setLabel(user.country));
@@ -50,6 +54,7 @@ public class CheckoutSteps {
         return this;
     }
 
+    @Step("Completing payment and confirm the order")
     public CheckoutSteps completePayment() {
         checkoutPage.paymentMethod.waitFor();
         checkoutPage.paymentMethod.selectOption(Constants.CASH_ON_DELIVERY);

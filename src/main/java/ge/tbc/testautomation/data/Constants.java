@@ -45,4 +45,7 @@ public class Constants {
     public static final String PRESTASHOP_CONTACT_SUBJECT = "Customer service";
     public static final String PRESTASHOP_CONTACT_MESSAGE = "I need assistance with a recent order and I am attaching a file that describes the issue.";
     public static final String PRESTASHOP_CONTACT_SUCCESS = "Your message has been successfully sent to our team.";
+
+    public static final String TECHCANVASS_REGISTER_URL = "https://techcanvass.com/examples/register.html";
+    public static final String TECHCANVASS_SUCCESS_ALERT = "Thanks for registering, we will get back to you shortly";
 }
