@@ -1,5 +1,6 @@
 package ge.tbc.testautomation.steps;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.SelectOption;
@@ -20,17 +21,25 @@ public class TechcanvassRegistrationSteps {
     }
     @Step("Open the Techcanvass registration form")
     public TechcanvassRegistrationSteps openForm() {
-        if (registrationPage.firstNameInput.count() > 0) return this;
-
-        Page.NavigateOptions options = new Page.NavigateOptions()
-                .setWaitUntil(WaitUntilState.DOMCONTENTLOADED).setTimeout(60_000);
-        try {
-            page.navigate(TECHCANVASS_REGISTER_URL, options);
-        } catch (TimeoutError e) {
-            page.navigate(TECHCANVASS_REGISTER_URL, options);
+        if (registrationPage.firstNameInput.count() > 0 && registrationPage.firstNameInput.isVisible()) {
+            return this;
         }
-        registrationPage.firstNameInput.waitFor();
-        return this;
+        TimeoutError lastError = null;
+        Page.NavigateOptions options = new Page.NavigateOptions()
+                .setWaitUntil(WaitUntilState.COMMIT)
+                .setTimeout(30_000);
+        for (int attempt = 0; attempt < 3; attempt++) {
+            try {
+                page.navigate(TECHCANVASS_REGISTER_URL, options);
+                registrationPage.registerButton.waitFor(new Locator.WaitForOptions()
+                        .setTimeout(45_000));
+                return this;
+            } catch (TimeoutError e) {
+                lastError = e;
+                page.waitForTimeout(3_000);
+            }
+        }
+        throw lastError;
     }
 
     @Step("Fill the registration form from a database row")

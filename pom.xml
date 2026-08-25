@@ -56,9 +56,6 @@
                 <version>3.5.2</version>
                 <configuration>
                     <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>
-                    <includes>
-                        <include>**/RegistrationTests.java</include>
-                    </includes>
                 </configuration>
             </plugin>
             <plugin>
